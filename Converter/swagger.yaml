@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Unit Conversion API'
+  description: 'API for unit conversion'
+paths:
+  '/convert':
+    post:
+      summary: 'Convert distance'
+      description: 'Converts distance from one unit to another'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                distance:
+                  type: object
+                  properties:
+                    unit:
+                      type: string
+                      description: 'Unit of distance'
+                    value:
+                      type: number
+                      description: 'Value of distance'
+                  required:
+                    - unit
+                    - value
+                convertTo:
+                  type: string
+                  description: 'Unit to convert to'
+              required:
+                - distance
+                - convertTo
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unit:
+                    type: string
+                    description: 'Converted unit'
+                  value:
+                    type: number
+                    description: 'Converted value'
+        '400':
+          description: 'Invalid JSON data'
+          content:
+            text/plain:
+              schema:
+                type: string
+  '/convert_delete':
+    delete:
+      summary: 'Delete unit'
+      description: 'Deletes a unit from the system'
+      parameters:
+        - in: query
+          name: unit
+          description: 'Unit to delete'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Unit deleted successfully'
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: 'Unit not found'
+          content:
+            text/plain:
+              schema:
+                type: string
+  '/units':
+    get:
+      summary: 'Get units'
+      description: 'Get the list of available units'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  units:
+                    type: object
+                    additionalProperties:
+                      type: number
